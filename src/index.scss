@@ -1,0 +1,10 @@
+@import './main.css';
+@import '~bootstrap/scss/bootstrap-grid';
+
+$bodycolor: #a14501;
+
+
+body{
+	color: $bodycolor;
+	font-weight: bold;
+}
