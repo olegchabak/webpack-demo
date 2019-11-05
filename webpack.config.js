@@ -7,7 +7,7 @@ const parts = require('./webpack.parts');
 
 const PATHS = {
 	app: path.join(__dirname, 'src')
-}
+};
 
 const commonConfig = merge([
 	{
@@ -18,7 +18,14 @@ const commonConfig = merge([
 		]
 	},
 	//parts.loadCSS(),
-	//parts.loadSass()
+	//parts.loadSass(),
+	parts.loadFonts({
+		options: {
+			limit: 40000,
+			name: "./fonts/[name].[ext]",
+			publicPath: "./"
+		}
+	}),
 ]);
 
 const productionConfig = merge([
@@ -27,7 +34,15 @@ const productionConfig = merge([
 	}),
 	parts.purifyCSS({
 		paths: glob.sync(`${PATHS.app}/**/*.js`, { nodir: true })
-	})
+	}),
+	parts.loadImages({
+		options: {
+			limit: 10000,
+			name: "./images/[name].[ext]"
+		}
+	}),
+	parts.loadJavaScript({include: PATHS.app}),
+	parts.generateSourceMaps({type: 'source-map'}),
 ]);
 
 const developmentConfig = merge([
@@ -37,7 +52,8 @@ const developmentConfig = merge([
 		port: process.env.PORT, // по умолчанию 8080
 	}),
 	parts.loadCSS(),
-	parts.loadSass()
+	parts.loadSass(),
+	parts.loadImages(),
 ]);
 
 module.exports = mode => {

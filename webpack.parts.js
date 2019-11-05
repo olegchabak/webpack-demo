@@ -81,3 +81,60 @@ exports.autoprefixer = () => ({
 		plugins: () => [require("autoprefixer")()]
 	}
 });
+
+exports.loadImages = ({include, exclude, options} = {}) => ({
+	module: {
+		rules: [
+			{
+				test: /\.(png|jpg)$/,
+				include,
+				exclude,
+				use: {
+					loader: "url-loader",
+					options,
+				}
+			},
+			{
+				test: /\.svg$/,
+				include,
+				exclude,
+				use: "file-loader"
+
+			}
+		]
+	}
+});
+
+exports.loadFonts = ({include, exclude, options} = {}) => ({
+	module: {
+		rules: [
+			{
+				test: /\.(ttf|eot|woff|woff2)$/,
+				include,
+				exclude,
+				use: {
+					loader: "url-loader",
+					options,
+				}
+			},
+		]
+	}
+});
+
+exports.loadJavaScript = ({include, exclude} = {}) => ({
+	module: {
+		rules: [
+			{
+				test: /\.js$/,
+				include,
+				exclude,
+				use: 'babel-loader'
+			}
+		]
+	}
+});
+
+exports.generateSourceMaps = ({type}) => ({
+	devtool: type
+});
+

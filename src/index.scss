@@ -3,13 +3,22 @@
 
 $bodycolor: #a14501;
 
+@font-face {
+	font-family: roboto;
+	src: url("./fonts/Roboto-Regular.woff2") format("woff2");
+}
 
 body{
 	color: $bodycolor;
 	font-weight: bold;
+	background-image: url('./images/demo.jpg');
+	background-image: url('./images/line-chart.svg');
+	font-family: roboto;
+
 }
 
 .test{
 	border-radius: 15px;
 	-webkit-border-radius: 15px;
+
 }
