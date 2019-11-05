@@ -16,6 +16,7 @@
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.6.4",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/preset-env": "^7.6.3",
     "autoprefixer": "^9.7.1",
     "babel-loader": "^8.0.6",
@@ -39,6 +40,8 @@
   },
   "dependencies": {
     "bootstrap": "^4.3.1",
-    "purecss": "^1.0.1"
+    "purecss": "^1.0.1",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0"
   }
 }

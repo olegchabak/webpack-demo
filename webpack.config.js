@@ -43,6 +43,24 @@ const productionConfig = merge([
 	}),
 	parts.loadJavaScript({include: PATHS.app}),
 	parts.generateSourceMaps({type: 'source-map'}),
+	//это Настройка vendor комплекта
+	{
+		output: {
+			// изменить название чанка
+			chunkFilename: "chunk.[id].js"
+		},
+		optimization:{
+			splitChunks:{
+				cacheGroups: {
+					commons: {
+						test: /[\\/]node_modules[\\/]/,
+						name: 'vendor',
+						chunks: "initial"
+					}
+				}
+			}
+		}
+	}
 ]);
 
 const developmentConfig = merge([
