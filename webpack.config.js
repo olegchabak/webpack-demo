@@ -29,6 +29,7 @@ const commonConfig = merge([
 ]);
 
 const productionConfig = merge([
+	parts.clean(),
 	parts.extractCSS({
 		use: ['css-loader', parts.autoprefixer()]
 	}),
@@ -43,6 +44,7 @@ const productionConfig = merge([
 	}),
 	parts.loadJavaScript({include: PATHS.app}),
 	parts.generateSourceMaps({type: 'source-map'}),
+
 	//это Настройка vendor комплекта
 	{
 		output: {
@@ -60,7 +62,9 @@ const productionConfig = merge([
 				}
 			}
 		}
-	}
+	},
+	parts.attachRevision()
+
 ]);
 
 const developmentConfig = merge([
