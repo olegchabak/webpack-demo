@@ -29,7 +29,7 @@ const commonConfig = merge([
 ]);
 
 const productionConfig = merge([
-	parts.clean(),
+	parts.clean(PATHS.build),
 	parts.extractCSS({
 		use: ['css-loader', parts.autoprefixer()]
 	}),
@@ -63,7 +63,8 @@ const productionConfig = merge([
 			}
 		}
 	},
-	parts.attachRevision()
+	parts.minifyJavaScript(),
+	parts.attachRevision(),
 
 ]);
 

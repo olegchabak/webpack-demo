@@ -4,6 +4,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const PurifyCssPlugin = require("purifycss-webpack");
 const {CleanWebpackPlugin} = require("clean-webpack-plugin");
 const GitRevisionPlugin = require("git-revision-webpack-plugin");
+const TerserPlugin = require('terser-webpack-plugin');
 
 exports.devServer = ({host, port} = {}) => ({
 	devServer: {
@@ -151,4 +152,10 @@ exports.attachRevision = () => ({
 			banner: new GitRevisionPlugin().version()
 		})
 	]
+});
+
+exports.minifyJavaScript = () => ({
+	optimization: {
+		minimizer: [new TerserPlugin({sourceMap: true})]
+	}
 });
