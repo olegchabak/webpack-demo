@@ -3,6 +3,7 @@ const glob = require('glob');
 const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+
 const parts = require('./webpack.parts');
 
 const PATHS = {
@@ -26,6 +27,7 @@ const commonConfig = merge([
 			publicPath: "./"
 		}
 	}),
+	parts.setFreeVariable("HELLO", "hello from config")
 ]);
 
 const productionConfig = merge([
@@ -39,7 +41,7 @@ const productionConfig = merge([
 	parts.loadImages({
 		options: {
 			limit: 10000,
-			name: "./images/[name].[ext]"
+			name: "./images/[name].[hash:4].[ext]"
 		}
 	}),
 	parts.loadJavaScript({include: PATHS.app}),
@@ -48,8 +50,11 @@ const productionConfig = merge([
 	//это Настройка vendor комплекта
 	{
 		output: {
+			path: PATHS.build,
+			filename: "[name].[chunkhash:4].js",
 			// изменить название чанка
-			chunkFilename: "chunk.[id].js"
+			//chunkFilename: "chunk.[id].js"
+			chunkFilename: "[name].[chunkhash:4].js"
 		},
 		optimization:{
 			splitChunks:{
@@ -60,12 +65,24 @@ const productionConfig = merge([
 						chunks: "initial"
 					}
 				}
+			},
+			runtimeChunk: {
+				name: "manifest"
 			}
 		}
 	},
 	parts.minifyJavaScript(),
 	parts.attachRevision(),
-
+	parts.minifyCSS({
+		options: {
+			discardComments: {
+				removeAll: true,
+			},
+			// Запустить cssnano в безопасном режиме, чтобы избежать
+			// потенциально небезопасные преобразования
+			safe: true
+		}
+	})
 ]);
 
 const developmentConfig = merge([

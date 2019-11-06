@@ -5,6 +5,8 @@ const PurifyCssPlugin = require("purifycss-webpack");
 const {CleanWebpackPlugin} = require("clean-webpack-plugin");
 const GitRevisionPlugin = require("git-revision-webpack-plugin");
 const TerserPlugin = require('terser-webpack-plugin');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const cssnano = require('cssnano');
 
 exports.devServer = ({host, port} = {}) => ({
 	devServer: {
@@ -25,7 +27,7 @@ exports.devServer = ({host, port} = {}) => ({
 
 exports.extractCSS = ({include, exclude, use = []}) => {
 	const plugin = new MiniCssExtractPlugin({
-		filename: "[name].css",
+		filename: "[name].[contenthash:4].css",
 	});
 	return {
 		module: {
@@ -159,3 +161,25 @@ exports.minifyJavaScript = () => ({
 		minimizer: [new TerserPlugin({sourceMap: true})]
 	}
 });
+
+exports.minifyCSS = ({options}) => ({
+	plugins: [
+		new OptimizeCssAssetsPlugin({
+			cssProcessor: cssnano,
+			cssProcessorOptions: options,
+			canPrint: false
+		})
+	]
+});
+
+// задаёт глобальную переменную
+exports.setFreeVariable = (key, value) => {
+	const env = {};
+	env[key] = JSON.stringify(value);
+
+	return {
+		plugins: [
+			new webpack.DefinePlugin(env)
+		]
+	}
+}
